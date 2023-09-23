@@ -18,4 +18,4 @@ SELECT * FROM Teste;
 -- Inserir registros
 INSERT INTO Teste(Nome, Telefone) VALUES
 	('Juan Felipe Alves Flores', '+55 (63) 99324-7036'),
-    ('Bárbara Ohana Santos Silva', '+55 (63) 99156-8201');
+	('Bárbara Ohana Santos Silva', '+55 (63) 99156-8201');
