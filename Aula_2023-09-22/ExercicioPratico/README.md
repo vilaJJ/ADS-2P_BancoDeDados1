@@ -21,7 +21,7 @@ Criar um banco de dados que permita cadastrar veículos pertencentes a uma escol
 
 <p>
 
-1. Criação das Tabelas: Crie três tabelas com as seguintes especificações:
+#### 1. Criação das Tabelas: Crie três tabelas com as seguintes especificações:
 
 </p>
 
@@ -44,20 +44,20 @@ Criar um banco de dados que permita cadastrar veículos pertencentes a uma escol
 
 <p>
 
-2. Relacionamento:    Estabeleça um relacionamento de um para muitos entre:
+#### 2. Relacionamento: Estabeleça um relacionamento de um para muitos entre:
 - Professores e Veículos
 - Departamentos e Veículos
 </p>
 
 <p>
 
-3. Inserção de Dados:  
-   Insira três registros em cada tabela, de acordo com a realidade da sua escola. Por exemplo, você pode inserir três professores, três departamentos e três veículos associando-os.
+#### 3. Inserção de Dados:  
+- Insira três registros em cada tabela, de acordo com a realidade da sua escola. Por exemplo, você pode inserir três professores, três departamentos e três veículos associando-os.
 </p>
 <p>
 
-4. Entrega:  
-   Gere o script SQL de criação das tabelas, estabelecimento de relacionamentos e inserção dos registros. Submeta este script no Google Sala de Aula na atividade correspondente.
+#### 4. Entrega:  
+- Gere o script SQL de criação das tabelas, estabelecimento de relacionamentos e inserção dos registros. Submeta este script no Google Sala de Aula na atividade correspondente.
 </p>
 
 <hr></hr>
