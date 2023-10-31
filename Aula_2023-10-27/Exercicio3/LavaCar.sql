@@ -32,11 +32,11 @@ CREATE TABLE Servicos(
 CREATE TABLE Agendamentos(
 	Codigo INT PRIMARY KEY AUTO_INCREMENT,
 	Cliente_Codigo INT NOT NULL,
-    Veiculos_Codigo INT NOT NULL,
+	Veiculos_Codigo INT NOT NULL,
 	Servico_Codigo INT NOT NULL,
 	DataAgendamento DATE NOT NULL,
 	FOREIGN KEY(Cliente_Codigo) REFERENCES Clientes(Codigo),
-    FOREIGN KEY(Veiculos_Codigo) REFERENCES Veiculos(Codigo),
+	FOREIGN KEY(Veiculos_Codigo) REFERENCES Veiculos(Codigo),
 	FOREIGN KEY(Servico_Codigo) REFERENCES Servicos(Codigo)
 );
 
@@ -219,8 +219,8 @@ WHERE
 -- 8. Liste todos os serviços com preços maiores que R$ 50,00 usando o operador de igualdade.
 SELECT 
 	Codigo AS 'Código',
-    Servico AS 'Serviço',
-    CONCAT('R$ ', FORMAT(Preco, 2)) AS 'Preço'
+	Servico AS 'Serviço',
+	CONCAT('R$ ', FORMAT(Preco, 2)) AS 'Preço'
 FROM Servicos
 WHERE
 	(Preco > 50) = True
@@ -255,7 +255,7 @@ ORDER BY
 -- 10. Selecione os clientes que agendaram serviços para mais de um veículo usando o operador lógico OR.
 SELECT
 	C.Codigo AS 'Código',
-    C.Nome AS 'Clientes que agendaram para mais de um veículo'
+	C.Nome AS 'Clientes que agendaram para mais de um veículo'
 FROM Clientes AS C
 INNER JOIN Veiculos AS V
 	ON C.Codigo = V.Cliente_Codigo
@@ -292,7 +292,7 @@ GROUP BY
 	C.Codigo
 ORDER BY
 	C.Nome ASC;
-
+ 
 -- 12. Encontre os veículos fabricados entre os anos de 2015 e 2020 usando o operador lógico AND.
 SELECT
 	Codigo AS 'Código',
@@ -312,7 +312,7 @@ SELECT
 	Ag.Codigo AS 'Código do Agendamento',
 	Ag.DataAgendamento AS 'Data Agendada',
 	S.Servico AS 'Serviço',
-    CONCAT('R$ ', FORMAT(S.Preco, 2)) AS 'Preço',
+	CONCAT('R$ ', FORMAT(S.Preco, 2)) AS 'Preço',
 	C.Nome AS 'Cliente',
 	CONCAT(V.Marca, ' ', V.Modelo, ' ', V.Ano, ' (', V.Placa, ')') AS 'Veículo',
 	Av.Nota AS 'Nota',
@@ -338,7 +338,7 @@ SELECT
 	Ag.Codigo AS 'Código do Agendamento',
 	Ag.DataAgendamento AS 'Data Agendada',
 	S.Servico AS 'Serviço',
-    CONCAT('R$ ', FORMAT(S.Preco, 2)) AS 'Preço',
+	CONCAT('R$ ', FORMAT(S.Preco, 2)) AS 'Preço',
 	C.Nome AS 'Cliente',
 	CONCAT(V.Marca, ' ', V.Modelo, ' ', V.Ano, ' (', V.Placa, ')') AS 'Veículo',
 	Av.Nota AS 'Nota',
@@ -380,7 +380,7 @@ SELECT
 	Ag.Codigo AS 'Código do Agendamento',
 	Ag.DataAgendamento AS 'Data Agendada',
 	S.Servico AS 'Serviço',
-    CONCAT('R$ ', FORMAT(S.Preco, 2)) AS 'Preço',
+	CONCAT('R$ ', FORMAT(S.Preco, 2)) AS 'Preço',
 	C.Nome AS 'Cliente',
 	CONCAT(V.Marca, ' ', V.Modelo, ' ', V.Ano, ' (', V.Placa, ')') AS 'Veículo',
 	Av.Nota AS 'Nota',
