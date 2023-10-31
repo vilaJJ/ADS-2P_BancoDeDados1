@@ -83,7 +83,7 @@ INSERT INTO Servicos(Servico, Preco) VALUES
 ('Enceramento', '60.00'),
 ('Polimento', '100.00'),
 ('Aspiração interna', '20.00'),
-('Lavagem dos bancos', '45.00');
+('Lavagem dos bancos', '35.00');
 
 INSERT INTO TiposPagamento(Nome) VALUES
 ('Dinheiro'),
@@ -191,6 +191,18 @@ INNER JOIN Agendamentos AS A
 	ON C.Codigo = A.Cliente_Codigo
 INNER JOIN Servicos AS S
 	ON A.Servico_Codigo = S.Codigo
+WHERE
+	(
+    SELECT 
+		SUM(Preco) 
+	FROM Servicos AS Se 
+	INNER JOIN Agendamentos AS Ag 
+		ON Se.Codigo = Ag.Servico_Codigo 
+	INNER JOIN Clientes AS Cl 
+		ON Ag.Cliente_Codigo = Cl.Codigo 
+	WHERE 
+		Cl.Codigo = C.Codigo
+	) > 100
 GROUP BY 
 	C.Codigo;
 
@@ -203,3 +215,189 @@ SELECT
 FROM Veiculos
 WHERE
 	Ano < 2010;
+
+-- 8. Liste todos os serviços com preços maiores que R$ 50,00 usando o operador de igualdade.
+SELECT 
+	Codigo AS 'Código',
+    Servico AS 'Serviço',
+    CONCAT('R$ ', FORMAT(Preco, 2)) AS 'Preço'
+FROM Servicos
+WHERE
+	(Preco > 50) = True
+ORDER BY
+	Codigo;
+
+-- 9. Encontre os agendamentos que foram agendados para veículos de clientes com avaliações igual ou maior que 4.
+SELECT
+	Ag.Codigo AS 'Código do Agendamento',
+	Ag.DataAgendamento AS 'Data Agendada',
+	S.Servico AS 'Serviço',
+	C.Nome AS 'Cliente',
+	CONCAT(V.Marca, ' ', V.Modelo, ' ', V.Ano, ' (', V.Placa, ')') AS 'Veículo',
+	Av.Nota AS 'Nota',
+	IFNULL(Av.Comentario, 'Avaliação realizada sem comentário') AS 'Comentário'
+	FROM Agendamentos AS Ag
+INNER JOIN Servicos AS S
+	ON Ag.Servico_Codigo = S.Codigo
+INNER JOIN Clientes AS C
+	ON Ag.Cliente_Codigo = C.Codigo
+INNER JOIN Veiculos AS V
+	ON Ag.Veiculos_Codigo = V.Codigo
+INNER JOIN Avaliacoes AS Av
+	ON Ag.Codigo = Av.Agendamento_Codigo
+WHERE
+	Av.Nota >= 4
+GROUP BY
+	Ag.Codigo
+ORDER BY
+	Ag.Codigo ASC;
+
+-- 10. Selecione os clientes que agendaram serviços para mais de um veículo usando o operador lógico OR.
+SELECT
+	C.Codigo AS 'Código',
+    C.Nome AS 'Clientes que agendaram para mais de um veículo'
+FROM Clientes AS C
+INNER JOIN Veiculos AS V
+	ON C.Codigo = V.Cliente_Codigo
+INNER JOIN Agendamentos AS A
+	ON C.Codigo = A.Cliente_Codigo
+WHERE
+	(
+	SELECT 
+		COUNT(DISTINCT Ve.Codigo) 
+	FROM Agendamentos AS Ag 
+	INNER JOIN Veiculos AS Ve 
+		ON Ag.Veiculos_Codigo = Ve.Codigo 
+	WHERE 
+		Ag.Cliente_Codigo = C.Codigo
+	) >= 2
+GROUP BY
+	C.Codigo;
+
+-- 11. Liste os clientes que pagaram em dinheiro ou com cartão de crédito usando o operador lógico OR.
+SELECT
+	C.Codigo AS 'Código',
+	C.Nome AS 'Clientes que pagaram com dinheiro/cartão de crédito'
+FROM Clientes AS C
+INNER JOIN Agendamentos AS A
+	ON C.Codigo = A.Cliente_Codigo
+INNER JOIN Pagamentos AS P
+	ON A.Codigo = P.Agendamento_Codigo
+INNER JOIN TiposPagamento AS TP
+	ON P.TipoPagamento_Codigo = TP.Codigo
+WHERE
+	TP.Codigo = 1 OR
+	TP.Codigo = 2
+GROUP BY
+	C.Codigo
+ORDER BY
+	C.Nome ASC;
+
+-- 12. Encontre os veículos fabricados entre os anos de 2015 e 2020 usando o operador lógico AND.
+SELECT
+	Codigo AS 'Código',
+	Placa AS 'Placa',
+	CONCAT(Marca, ' ', Modelo) AS 'Veículo',
+	Ano AS 'Ano de fabricação'
+FROM Veiculos
+WHERE
+	Ano BETWEEN 2015 AND 2020
+GROUP BY
+	Codigo
+ORDER BY
+	Marca ASC;
+
+-- 13. Liste os agendamentos feitos para serviços com preços iguais ou menores que R$ 30,00.
+SELECT
+	Ag.Codigo AS 'Código do Agendamento',
+	Ag.DataAgendamento AS 'Data Agendada',
+	S.Servico AS 'Serviço',
+    CONCAT('R$ ', FORMAT(S.Preco, 2)) AS 'Preço',
+	C.Nome AS 'Cliente',
+	CONCAT(V.Marca, ' ', V.Modelo, ' ', V.Ano, ' (', V.Placa, ')') AS 'Veículo',
+	Av.Nota AS 'Nota',
+	IFNULL(Av.Comentario, 'Avaliação realizada sem comentário') AS 'Comentário'
+	FROM Agendamentos AS Ag
+INNER JOIN Servicos AS S
+	ON Ag.Servico_Codigo = S.Codigo
+INNER JOIN Clientes AS C
+	ON Ag.Cliente_Codigo = C.Codigo
+INNER JOIN Veiculos AS V
+	ON Ag.Veiculos_Codigo = V.Codigo
+INNER JOIN Avaliacoes AS Av
+	ON Ag.Codigo = Av.Agendamento_Codigo
+WHERE
+	S.Preco <= 30
+GROUP BY
+	Ag.Codigo
+ORDER BY
+	Ag.Codigo ASC;
+
+-- 14. Encontre os clientes que agendaram serviços para veículos fabricados após 2010 e que pagaram mais de R$ 80,00.
+SELECT
+	Ag.Codigo AS 'Código do Agendamento',
+	Ag.DataAgendamento AS 'Data Agendada',
+	S.Servico AS 'Serviço',
+    CONCAT('R$ ', FORMAT(S.Preco, 2)) AS 'Preço',
+	C.Nome AS 'Cliente',
+	CONCAT(V.Marca, ' ', V.Modelo, ' ', V.Ano, ' (', V.Placa, ')') AS 'Veículo',
+	Av.Nota AS 'Nota',
+	IFNULL(Av.Comentario, 'Avaliação realizada sem comentário') AS 'Comentário'
+	FROM Agendamentos AS Ag
+INNER JOIN Servicos AS S
+	ON Ag.Servico_Codigo = S.Codigo
+INNER JOIN Clientes AS C
+	ON Ag.Cliente_Codigo = C.Codigo
+INNER JOIN Veiculos AS V
+	ON Ag.Veiculos_Codigo = V.Codigo
+INNER JOIN Avaliacoes AS Av
+	ON Ag.Codigo = Av.Agendamento_Codigo
+WHERE
+	V.Ano > 2010 AND
+	S.Preco > 80
+GROUP BY
+	Ag.Codigo
+ORDER BY
+	Ag.Codigo ASC;
+
+-- 15. Selecione os veículos com placas que começam com as letras "ABC" ou "XYZ" usando o operador lógico OR.
+SELECT
+	Codigo AS 'Código',
+	Placa AS 'Placa',
+	CONCAT(Marca, ' ', Modelo) AS 'Veículo',
+	Ano AS 'Ano de fabricação'
+FROM Veiculos
+WHERE
+	Placa LIKE 'ABC%' OR
+    Placa LIKE 'XYZ%'
+GROUP BY
+	Codigo
+ORDER BY
+	Marca ASC;
+
+-- 16. Liste os agendamentos que foram feitos para serviços com preços menores que R$ 40,00 ou que foram agendados para veículos fabricados antes de 2015 usando o operador lógico OR.
+SELECT
+	Ag.Codigo AS 'Código do Agendamento',
+	Ag.DataAgendamento AS 'Data Agendada',
+	S.Servico AS 'Serviço',
+    CONCAT('R$ ', FORMAT(S.Preco, 2)) AS 'Preço',
+	C.Nome AS 'Cliente',
+	CONCAT(V.Marca, ' ', V.Modelo, ' ', V.Ano, ' (', V.Placa, ')') AS 'Veículo',
+	Av.Nota AS 'Nota',
+	IFNULL(Av.Comentario, 'Avaliação realizada sem comentário') AS 'Comentário'
+	FROM Agendamentos AS Ag
+INNER JOIN Servicos AS S
+	ON Ag.Servico_Codigo = S.Codigo
+INNER JOIN Clientes AS C
+	ON Ag.Cliente_Codigo = C.Codigo
+INNER JOIN Veiculos AS V
+	ON Ag.Veiculos_Codigo = V.Codigo
+INNER JOIN Avaliacoes AS Av
+	ON Ag.Codigo = Av.Agendamento_Codigo
+WHERE
+	S.Preco < 40 OR
+    V.Ano < 2015
+GROUP BY
+	Ag.Codigo
+ORDER BY
+	Ag.Codigo ASC;
