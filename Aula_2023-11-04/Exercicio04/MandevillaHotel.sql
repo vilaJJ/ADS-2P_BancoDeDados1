@@ -241,8 +241,44 @@ WHERE
 -- 4. Atualize o preço de todos os quartos de luxo para um novo valor.
 UPDATE Quartos SET Preco = 350 WHERE TipoQuarto_Codigo = 3;
 
+-- 5. Delete todas as reservas feitas por clientes que não fizeram check-in no hotel.
+-- Pela forma que o banco foi estruturado, não é possível realizar esse tipo de ação.
+
+-- 6. Liste todos os clientes que fizeram check-in em um hotel e também fizeram uma reserva no restaurante.
+-- Pela forma que o banco foi estruturado, não é possível realizar esse tipo de ação.
+
 -- 7. Mostre o número total de quartos disponíveis em todos os hotéis da rede.
 SELECT SUM(QuantidadeQuartos) AS 'Quantidade de Quartos' FROM Hoteis;
+
+-- 8. Liste todos os funcionários que têm mais de 5 anos de experiência.
+SELECT
+	F.Codigo AS 'Código',
+	H.Nome AS 'Hotel',
+	C.Nome AS 'Cargo',
+	F.Nome AS 'Funcionário',
+	F.DataContratacao AS 'Data de Contratação'
+FROM Funcionarios F
+INNER JOIN Hoteis H
+	ON F.Hotel_Codigo = H.Codigo
+INNER JOIN Cargos C
+	ON F.Cargo_Codigo = C.Codigo
+WHERE 
+	(YEAR(now()) - YEAR(DataContratacao)) > 5
+ORDER BY
+	F.Codigo;
+
+-- 9. Liste os serviços disponíveis em um hotel específico.
+SELECT
+	S.Codigo AS 'Código',
+	S.Nome AS 'Serviço'
+FROM Servicos S
+INNER JOIN Hoteis H
+	ON S.Hotel_Codigo = H.Codigo
+WHERE
+	H.Codigo = 1
+ORDER BY
+	S.Codigo;
+
 
 -- 10. Encontre todas as avaliações com uma classificação igual ou superior a 4.
 SELECT
