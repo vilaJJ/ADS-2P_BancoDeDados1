@@ -239,14 +239,10 @@ WHERE
 	('2023-10-20' > R.CheckIn AND '2023-10-22' < R.CheckOut) = False;
 
 -- 4. Atualize o preço de todos os quartos de luxo para um novo valor.
-UPDATE Quartos
-	SET Preco = 350
-WHERE TipoQuarto_Codigo = 
-(
-	SELECT Codigo 
-	FROM TipoQuarto AS TQ 
-	WHERE TQ.Codigo = 3
-);
+UPDATE Quartos SET Preco = 350 WHERE TipoQuarto_Codigo = 3;
+
+-- 7. Mostre o número total de quartos disponíveis em todos os hotéis da rede.
+SELECT SUM(QuantidadeQuartos) AS 'Quantidade de Quartos' FROM Hoteis;
 
 -- 10. Encontre todas as avaliações com uma classificação igual ou superior a 4.
 SELECT
@@ -273,3 +269,6 @@ ORDER BY
 UPDATE Clientes
 	SET Endereco = 'Rua das Madeiradas, n° 750, St. Anhaguera, Araguaína - TO'
 WHERE Codigo = 4;
+
+-- 12. Delete um serviço específico de um hotel.
+DELETE FROM Servicos WHERE Codigo = 7;
