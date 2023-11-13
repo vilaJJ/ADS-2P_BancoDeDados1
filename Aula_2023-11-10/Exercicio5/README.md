@@ -1,4 +1,4 @@
-# Exercício de Banco de Dados MySQL - Sistema de Gerenciamento de Lanchonete (Exercício 05 - 2° bimestre)
+# Exercício de Banco de Dados MySQL - Sistema de Gerenciamento de Serviço do Streaming de Vídeo (Exercício 05 - 2° bimestre)
 
 <p>INSTITUTO FEDERAL DO TOCANTINS - CAMPUS ARAGUAÍNA</p>
 <p>10 de novembro de 2023, sexta-feira</p>
