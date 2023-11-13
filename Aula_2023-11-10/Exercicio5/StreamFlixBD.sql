@@ -73,10 +73,10 @@ INSERT INTO Generos(Nome) VALUES
 ('Comédia');
 
 INSERT INTO ClassificacoesEtarias(Nome, IdadeMinima) VALUES
-('G', null),
-('PG', null),
+('G', 0),
+('PG', 3),
 ('PG-13', 13),
-('R', null),
+('R', 10),
 ('NC-17', 18);
 
 INSERT INTO Usuarios(Nome, Email, Senha, DataCadastro) VALUES
@@ -119,3 +119,142 @@ INSERT INTO ClassificacoesTitulos(Usuario_Codigo, Titulo_Codigo, Estrelas, Comen
 (1, 3, 2, 'Achei deplorável! A história tinha potência entretanto não foi bem aproveitada. Não há desenvolvimento sobre nenhum dos tópicos da trama, sem contar com o final decepcionante. A falta de um antagonista durante grande parte da obra dificulta o envolvimento do expectador. Não recomendo, parece um filme que acaba sem fim.'),
 (1, 5, 1, 'Um dos lançamentos mais badalados dos últimos tempos não justifica expectativa criada. Não há pornografia e nem mesmo erotismo. Se o roteiro de Cinquenta Tons de Cinza fosse visualizado por um cineasta do porte de um Bernardo Bertolucci teríamos um resultado no mínimo instigante, mas este não é o caso da diretora Sam Taylor. Sendo assim, o resultado é um filme ruim mesmo. Baseado em literatura lixo na mesma linha de Crepúsculo.');
 
+-- Questões
+
+-- 1. Selecione todos os usuários registrados.
+SELECT 
+	Codigo AS 'Código',
+	Nome AS 'Nome',
+	Email AS 'Email',
+	DATE_FORMAT(DataCadastro, '%d/%m/%Y %H:%i:%s') AS 'Data de Cadastro'
+FROM Usuarios
+ORDER BY
+	DataCadastro;
+    
+-- 2. Selecione todos os títulos disponíveis que foram lançados após 2020.
+SELECT
+	Codigo AS 'Código',
+	Nome AS 'Nome do Título',
+	AnoLancamento AS 'Ano de Lançamento'
+FROM Titulos
+WHERE
+	AnoLancamento > 2020
+ORDER BY
+	Codigo;
+    
+-- 3. Encontre o título com a classificação etária mais alta.
+SELECT
+	T.Nome AS 'Nome do Título',
+	CE.Nome AS 'Classificação Etária'
+FROM Titulos T
+INNER JOIN ClassificacoesEtarias CE
+	ON T.ClassificacaoEtaria_Codigo = CE.Codigo
+WHERE
+	CE.IdadeMinima = (SELECT MAX(IdadeMinima) FROM ClassificacoesEtarias)
+ORDER BY
+	T.AnoLancamento;
+
+-- 4. Encontre o título com a classificação etária mais baixa.
+SELECT
+	T.Nome AS 'Nome do Título',
+	CE.Nome AS 'Classificação Etária'
+FROM Titulos T
+INNER JOIN ClassificacoesEtarias CE
+	ON T.ClassificacaoEtaria_Codigo = CE.Codigo
+WHERE
+	CE.IdadeMinima = (SELECT MIN(IdadeMinima) FROM ClassificacoesEtarias)
+ORDER BY
+	T.AnoLancamento;
+    
+-- 5. Selecione todos os usuários que se registraram após 1º de janeiro de 2023.
+SELECT 
+	Codigo AS 'Código',
+	Nome AS 'Nome',
+	Email AS 'Email',
+	DATE_FORMAT(DataCadastro, '%d/%m/%Y %H:%i:%s') AS 'Data de Cadastro'
+FROM Usuarios
+WHERE
+	DataCadastro > '2023-01-01'
+ORDER BY
+	DataCadastro;
+
+-- 6. Selecione todos os títulos com classificação etária igual a 'PG-13' ou 'R'.
+SELECT
+	T.Nome AS 'Nome do Título',
+	CE.Nome AS 'Classificação Etária'
+FROM Titulos T
+INNER JOIN ClassificacoesEtarias CE
+	ON T.ClassificacaoEtaria_Codigo = CE.Codigo
+WHERE
+	CE.Nome = 'PG-13' OR 
+	CE.Nome = 'R'
+ORDER BY
+	T.AnoLancamento;
+
+-- 7. Encontre o título mais antigo disponível.
+SELECT
+	Codigo AS 'Código',
+	Nome AS 'Nome do Título',
+	AnoLancamento AS 'Ano de Lançamento'
+FROM Titulos
+WHERE
+	AnoLancamento = (SELECT MIN(AnoLancamento) FROM Titulos)
+ORDER BY
+	Codigo;
+
+-- 8. Selecione todos os títulos adicionados à lista de reprodução do usuário com ID igual a 3.
+SELECT
+	T.Codigo AS 'Código do Título',
+	T.Nome AS 'Título',
+	DATE_FORMAT(LR.DataAdicao, '%d/%m/%Y %H:%i:%s') AS 'Data de Adição',
+	DATE_FORMAT(LR.DataVisualizacao, '%d/%m/%Y %H:%i:%s') AS 'Data de Visualização'
+FROM Titulos T
+INNER JOIN ListasReproducao LR
+	ON T.Codigo = LR.Titulo_Codigo
+WHERE
+	LR.Usuario_Codigo = 3
+ORDER BY
+	LR.DataAdicao;
+
+-- 9. Selecione todos os títulos visualizados pelo usuário com ID igual a 2.
+SELECT
+	T.Codigo AS 'Código do Título',
+	T.Nome AS 'Título',
+	DATE_FORMAT(HV.DataVisualizacao, '%d/%m/%Y %H:%i:%s') AS 'Data de Visualização'
+FROM Titulos T
+INNER JOIN HistoricoVisualizacao HV
+	ON T.Codigo = HV.Titulo_Codigo
+WHERE
+	HV.Usuario_Codigo = 2
+ORDER BY
+	HV.DataVisualizacao;
+
+-- 10. Atualize a classificação do título com ID igual a 1 para 4 estrelas.
+UPDATE ClassificacoesTitulos SET
+	Estrelas = 4
+WHERE
+	Codigo = 1;
+
+-- 11. Atualize o nome do usuário com ID igual a 5 para 'Novo Nome'.
+UPDATE Usuarios SET
+	Nome = 'Novo Nome'
+WHERE
+	Codigo = 5;
+
+-- 12. Selecione todos os títulos com classificação igual ou superior a 4 estrelas que foram lançados entre 2020 e 2022 ou têm uma classificação etária de 'R'.
+SELECT
+	T.Codigo AS 'Código do Título',
+	T.Nome AS 'Título',
+	T.AnoLancamento AS 'Ano de Lançamento',
+	CE.Nome AS 'Classificação Etária',
+	CONCAT(FORMAT((SELECT AVG(Estrelas) FROM ClassificacoesTitulos WHERE Titulo_Codigo = T.Codigo), 1), '/5.0') AS 'Nota do público'
+FROM Titulos T
+INNER JOIN ClassificacoesEtarias CE
+	ON T.ClassificacaoEtaria_Codigo = CE.Codigo
+INNER JOIN ClassificacoesTitulos CT
+	ON T.Codigo = CT.Titulo_Codigo
+WHERE
+	(SELECT AVG(Estrelas) FROM ClassificacoesTitulos WHERE Titulo_Codigo = T.Codigo) >= 4 AND
+	(T.AnoLancamento BETWEEN 2020 AND 2023 OR CE.Nome = 'R')
+ORDER BY
+	T.Nome;
