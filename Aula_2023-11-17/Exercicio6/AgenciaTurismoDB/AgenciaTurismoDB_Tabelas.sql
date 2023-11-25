@@ -1,3 +1,14 @@
+/* Exercício 6 - 
+Exercício de Banco de Dados MySQL - Agência de Turismo (Exercício 06 - 2° bimestre)
+
+INSTITUTO FEDERAL DO TOCANTINS - CAMPUS ARAGUAÍNA
+17 de novembro de 2023, sexta-feira
+Estudante: Juan Felipe Alves Flores
+Turma: 2° Período ADS
+Professor: Gilvan Viera Moura
+Disciplina: Banco de Dados I
+*/
+
 -- Criando tabelas
 
 -- Tabela responsável por salvar o nome e sigla dos estados (UF).
@@ -112,7 +123,7 @@ CREATE TABLE ReservasRestaurantes(
 	FOREIGN KEY(MesaRestaurante_Codigo) REFERENCES RestaurantesMesas(Codigo)
 );
 
--- Tabela responsável por salvar as informações de casas de show, com informações de localização, contato e capacidade máxima
+-- Tabela responsável por salvar as informações de casas de show, o restaurante parceiro, informações de localização, contato e capacidade máxima
 CREATE TABLE CasasShow(
 	Codigo INT PRIMARY KEY AUTO_INCREMENT,
 	Restaurante_Codigo INT NOT NULL,
