@@ -1,20 +1,5 @@
 -- Criando tabelas
-/*
-(X) -> Estados
-(X) -> Cidades
-(X) -> PontosTuristicos
-(X) -> Museus
-(X) -> FundadoresMuseus
-(X) -> Hoteis
-(X) -> HoteisQuartos
-(X) -> ReservasHoteis
-(X) -> Restaurantes
-(X) -> RestaurantesMenu
-(X) -> RestaurantesMesas
-(X) -> ReservasRestaurantes
-(X) -> CasasShow
-(X) -> Atracoes 
-*/
+
 -- Tabela responsável por salvar o nome e sigla dos estados (UF).
 CREATE TABLE Estados(
 	Codigo INT PRIMARY KEY AUTO_INCREMENT,
