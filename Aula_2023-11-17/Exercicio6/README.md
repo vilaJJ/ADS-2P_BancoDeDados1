@@ -38,8 +38,6 @@ Além disso, é necessário implementar restrições de participação total e p
 
 #### Parte 1: Criação do Banco de Dados
 
-##### Instruções:
-
 <p>
 
 1. Crie um novo banco de dados chamado "**AgenciaTurismo**".
