@@ -43,8 +43,8 @@ incluindo 3 unidades do produto "Rosa Vermelha",
 com um preço total de R$ 60 e status "pendente".
 */
 
-INSERT INTO Pedidos(Cliente_Codigo, Status_Codigo, QuantidadeItens, PrecoTotal) VALUES
-(1, 1, 3, 60);
+INSERT INTO Pedidos(Cliente_Codigo, Status_Codigo, DataPedido, QuantidadeItens, PrecoTotal) VALUES
+(1, 1, '2023-11-26 12:41:22', 3, 60);
 INSERT INTO ItensPedido(Pedido_Codigo, Produto_Codigo, Quantidade) VALUES 
 (1, 1, 3);
 UPDATE Estoque SET Quantidade = Quantidade - 3 WHERE Produto_Codigo = 1;
@@ -55,7 +55,8 @@ UPDATE Estoque SET Quantidade = Quantidade - 3 WHERE Produto_Codigo = 1;
 
 INSERT INTO ProdutosCategoria(Nome) VALUES
 ('Cactos'),
-('Orquídeas');
+('Orquídeas'),
+('Arranjos Florais');
 
 INSERT INTO Produtos(Categoria_Codigo, Nome, Descricao, Preco) VALUES
 (1, 'Girassóis de Van Gogh', 'Incrivéis girassóis do lendário Van Gogh', 50),
@@ -73,9 +74,9 @@ INSERT INTO StatusPedido(Nome) VALUES
 ('Extraviado'),
 ('Danificado');
 
-INSERT INTO Pedidos(Cliente_Codigo, Status_Codigo, QuantidadeItens, PrecoTotal) VALUES
-(2, 3, 5, 250),
-(3, 2, 4, 260);
+INSERT INTO Pedidos(Cliente_Codigo, Status_Codigo, DataPedido, QuantidadeItens, PrecoTotal) VALUES
+(2, 3, '2023-12-03 09:02:41', 5, 250),
+(3, 2, '2023-10-22 17:52:32', 4, 260);
 
 INSERT INTO ItensPedido(Pedido_Codigo, Produto_Codigo, Quantidade) VALUES
 (2, 2, 5),

@@ -43,6 +43,7 @@ CREATE TABLE Pedidos(
     Codigo INT PRIMARY KEY AUTO_INCREMENT,
     Cliente_Codigo INT NOT NULL,
     Status_Codigo INT NOT NULL,
+    DataPedido DATETIME NOT NULL,
     QuantidadeItens INT NOT NULL,
     PrecoTotal DECIMAL(10,2) NOT NULL,
     FOREIGN KEY(Cliente_Codigo) REFERENCES Clientes(Codigo),
